@@ -1,0 +1,13 @@
+parameters:
+    reportUnmatchedIgnoredErrors: false
+    earlyTerminatingMethodCalls: [abort]
+    includes:
+        - vendor/phpstan/phpstan-phpunit/extension.neon
+        - vendor/phpstan/phpstan-mockery/extension.neon
+
+    ignoreErrors:
+        - '#Call to an undefined method Illuminate\\Support\\HigherOrder#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\.+#'
+
+    universalObjectCratesClasses:
+        - Illuminate\Database\Eloquent\Model

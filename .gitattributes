@@ -1,0 +1,5 @@
+* text=auto
+*.css linguist-vendored
+*.less linguist-vendored
+*.lock linguist-generated=true
+*lock.json linguist-generated=true
