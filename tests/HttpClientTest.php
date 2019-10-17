@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Unit\Http;
 
-use Gocanto\BetterHttpClient\HttpClient;
+use Gocanto\HttpClient\HttpClient;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;

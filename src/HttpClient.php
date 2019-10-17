@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Gocanto\BetterHttpClient;
+namespace Gocanto\HttpClient;
 
 use Closure;
 use GuzzleHttp\Client;
