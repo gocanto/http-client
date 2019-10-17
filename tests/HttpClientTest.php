@@ -3,18 +3,20 @@ namespace Tests\Unit\Http;
 
 use Gocanto\BetterHttpClient\HttpClient;
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 
 class HttpClientTest extends TestCase
 {
     /**
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \RuntimeException
+     * @throws GuzzleException
+     * @throws RuntimeException
      */
     public function testRetry(): void
     {
@@ -28,6 +30,7 @@ class HttpClientTest extends TestCase
 
     /**
      * @test
+     * @throws GuzzleException
      */
     public function itAllowsDecidersCallback()
     {

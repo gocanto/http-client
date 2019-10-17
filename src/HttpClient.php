@@ -12,17 +12,19 @@ namespace Gocanto\BetterHttpClient;
 
 use Closure;
 use GuzzleHttp\Client;
-use Psr\Log\NullLogger;
-use GuzzleHttp\Middleware;
-use GuzzleHttp\Psr7\Request;
-use Psr\Log\LoggerInterface;
-use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\TransferStats;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\TransferStats;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 class HttpClient extends Client
 {
+    public const VERSION = '1.0.0';
+
     /** @var LoggerInterface */
     private $logger;
     /** @var array Default request options */
@@ -204,7 +206,7 @@ class HttpClient extends Client
     }
 
     /**
-     * @return LoggerInterface|Logger
+     * @return LoggerInterface
      */
     public function getLogger(): LoggerInterface
     {
