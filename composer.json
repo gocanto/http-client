@@ -3,7 +3,7 @@
     "name": "gocanto/http-client",
     "homepage": "https://github.com/gocanto/http-client",
     "type": "php-bundle",
-    "description": "A Guzzle extended client.",
+    "description": "Http client that handles retries & logging.",
     "minimum-stability": "dev",
     "prefer-stable": true,
     "keywords": [
