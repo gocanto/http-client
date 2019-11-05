@@ -37,7 +37,7 @@ use GuzzleHttp\Client;
 $response = (new Client)->get('http://foo.com'); 
 ```
 
-This is a simple use case that we all have came across some other time. But, What would you do if there is an error and you need to handle some retires?
+This is a simple use case that we all have came across some other time. But, What would you do if there is an error and you need to handle some retries?
 
 Well, if you are anything like me, you would do something like:
 
