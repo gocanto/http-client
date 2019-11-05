@@ -48,7 +48,12 @@ $retry = 1;
 $response = null;
 
 do {
-    $response = (new Client)->get('http://foo.com');
+    try {
+        $response = (new Client)->get('http://xfoo.com');
+    } catch (\Exception $e) {
+        ++$retry;
+    }
+
 } while ($response === null && $retry <= 5);
 ```
 
