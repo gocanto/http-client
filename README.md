@@ -59,9 +59,9 @@ There you have a working code, but you will have to do the same procedure every 
 By using the HTTP client shipped within this package, you will be able to call the retry mechanism within the same HTTP call. For Example:"
 
 ```php
-use GuzzleHttp\Client;
+use Gocanto\HttpClient\HttpClient;
 
-$response = (new Client)->retry(5)->get('http://foo.com'); 
+$response = (new HttpClient)->retry(5)->get('http://foo.com'); 
 ```
 
 This line of code does exactly the same as the ones above, but more efficient and elegant. This library also ships a different method `onRetry()` that performs the same retries, but it also gives the ability to hook into the retry call. 
@@ -69,9 +69,9 @@ This line of code does exactly the same as the ones above, but more efficient an
 You would be able to use it like so: 
 
 ```php
-use GuzzleHttp\Client;
+use Gocanto\HttpClient\HttpClient;
 
-$response = (new Client)->onRetry(function () {})->get('http://foo.com'); 
+$response = (new HttpClient)->onRetry(function () {})->get('http://foo.com'); 
 ```
 
 Here, you will be given the incoming request and response that you are handling in that particular moment. [see more](https://github.com/gocanto/http-client/blob/master/src/HttpClient.php#L82)
