@@ -49,7 +49,7 @@ $response = null;
 
 do {
     $response = (new Client)->get('http://foo.com');
-} while ($response === null && $retry <= 5);
+} while ($response === null && $retry++ <= 5);
 ```
 
 There you have a working code, but you will have to do the same procedure every time you need to perform some kind of HTTP request. 
