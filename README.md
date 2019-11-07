@@ -6,7 +6,7 @@
 
 This library is a wrapper around the famous Guzzle `HTTP` client with some goodies on top of it. 
 
-This client gives you the ability to perform `retries` and `log` any request information you my need. 
+This client gives you the ability to perform `retries` and `log` any request information you may need. 
 
 ## Installation
 
