@@ -49,11 +49,12 @@ $response = null;
 
 do {
     try {
-        $response = (new Client)->get('http://xfoo.com');
+        $response = (new Client)->get('http://foo.com');
     } catch (\GuzzleHttp\Exception\RequestException $e) {
+        $retry++
     }
 
-} while ($response === null && $retry++ <= 5);
+} while ($response === null && $retry <= 5);
 ```
 
 There you have a working code, but you will have to do the same procedure every time you need to perform some kind of HTTP request. 
