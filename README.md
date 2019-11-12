@@ -43,6 +43,7 @@ Well, if you are anything like me, you would do something like:
 
 ```php
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 $retry = 1;
 $response = null;
@@ -50,10 +51,9 @@ $response = null;
 do {
     try {
         $response = (new Client)->get('http://foo.com');
-    } catch (\GuzzleHttp\Exception\RequestException $e) {
-        $retry++
+    } catch (RequestException $e) {
+        $retry++;
     }
-
 } while ($response === null && $retry <= 5);
 ```
 
