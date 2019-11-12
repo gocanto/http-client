@@ -65,8 +65,13 @@ By using the HTTP client shipped within this package, you will be able to call t
 
 ```php
 use Gocanto\HttpClient\HttpClient;
+use GuzzleHttp\Exception\RequestException;
 
-$response = (new HttpClient)->retry(5)->get('http://foo.com'); 
+try {
+    $response = (new HttpClient)->retry(5)->get('http://foo.com'); 
+} catch (RequestException $e) {
+    //you need to still handle errors here!
+}
 ```
 
 This line of code does exactly the same as the ones above, but more efficient and elegant. This library also ships a different method `onRetry()` that performs the same retries, but it also gives the ability to hook into the retry call. 
@@ -75,8 +80,13 @@ You would be able to use it like so:
 
 ```php
 use Gocanto\HttpClient\HttpClient;
+use GuzzleHttp\Exception\RequestException;
 
-$response = (new HttpClient)->onRetry(function () {})->get('http://foo.com'); 
+try {
+    $response = (new HttpClient)->onRetry(function () {})->get('http://foo.com'); 
+} catch (RequestException $e) {
+    //you need to still handle errors here!
+}
 ```
 
 Here, you will be given the incoming request and response that you are handling in that particular moment. [see more](https://github.com/gocanto/http-client/blob/master/src/HttpClient.php#L82)
