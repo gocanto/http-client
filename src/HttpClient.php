@@ -14,10 +14,12 @@ use Closure;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\TransferStats;
+use Psr\Http\Message\RequestInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -48,7 +50,7 @@ class HttpClient extends Client
     private function addStatsListener() : callable
     {
         return function (TransferStats $stats) {
-            $this->logger->info('Request stats summary', [
+            $this->logger->info('Request stats summary.', [
                 'method' => $stats->getRequest()->getMethod(),
                 'stats' => $stats->getHandlerStats(),
             ]);
@@ -195,6 +197,41 @@ class HttpClient extends Client
 
             return (2 ** ($numberOfRetries - 1)) * 200;
         };
+    }
+
+    /**
+     * @param array $headers
+     * @return HttpClient
+     */
+    public function withHeaders(array $headers): HttpClient
+    {
+        $middleware = function (callable $handler) use ($headers) {
+            return function (
+                RequestInterface $request,
+                array $options
+            ) use (
+                $handler,
+                $headers
+            ) {
+                foreach ($headers as $name => $value) {
+                    $request = $request->withHeader($name, $value);
+                }
+
+                return $handler($request, $options);
+            };
+        };
+
+        /** @var HandlerStack $handler */
+        $handler = $this->getConfig('handler');
+        $handler->push($middleware);
+
+        $config = $this->getConfig();
+        $config['handler'] = $handler;
+
+        $new = clone $this;
+        $new->config = $config;
+
+        return $new;
     }
 
     /**
