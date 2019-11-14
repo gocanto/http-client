@@ -19,10 +19,9 @@ use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\TransferStats;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -90,8 +89,8 @@ class HttpClient extends Client
 
         $decider = function (
             $retries,
-            Request $request,
-            Response $response = null,
+            RequestInterface $request,
+            ResponseInterface $response = null,
             RequestException $exception = null
         ) use (
             $callback,
@@ -121,8 +120,8 @@ class HttpClient extends Client
     {
         return function (
             $retries,
-            Request $request,
-            Response $response = null,
+            RequestInterface $request,
+            ResponseInterface $response = null,
             RequestException $exception = null
         ) use (
             $retryTotal
@@ -152,17 +151,17 @@ class HttpClient extends Client
     }
 
     /**
-     * @param Request $request
+     * @param RequestInterface $request
      * @param int $retries
      * @param int $retryTotal
-     * @param Response|null $response
+     * @param ResponseInterface|null $response
      * @param RequestException|null $exception
      */
     private function warning(
-        Request $request,
+        RequestInterface $request,
         int $retries,
         int $retryTotal,
-        ?Response $response,
+        ?ResponseInterface $response,
         ?RequestException $exception
     ): void {
         $this->getLogger()->warning(

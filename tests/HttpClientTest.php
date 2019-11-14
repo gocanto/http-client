@@ -17,10 +17,10 @@ use Gocanto\HttpClient\HttpClient;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 
@@ -100,8 +100,8 @@ class HttpClientTest extends TestCase
     {
         return function (
             $retries,
-            Request $request,
-            Response $response = null,
+            RequestInterface $request,
+            ResponseInterface $response = null,
             RequestException $exception = null
         ) use (
             $retryTotal
