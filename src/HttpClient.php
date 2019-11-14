@@ -215,6 +215,11 @@ class HttpClient extends Client
             ) {
                 foreach ($headers as $name => $value) {
                     $request = $request->withHeader($name, $value);
+
+//                    $this->getLogger()->info('The header added.', [
+//                        'name' => $name,
+//                        'value' => $value,
+//                    ]);
                 }
 
                 return $handler($request, $options);
@@ -223,7 +228,7 @@ class HttpClient extends Client
 
         /** @var HandlerStack $handler */
         $handler = $this->getConfig('handler');
-        $handler->push($middleware);
+        $handler->push($middleware, 'dynamic_headers');
 
         $config = $this->getConfig();
         $config['handler'] = $handler;

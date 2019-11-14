@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Tests\Unit\Http;
 
 use Gocanto\HttpClient\HttpClient;
@@ -40,6 +43,27 @@ class HttpClientTest extends TestCase
             ->request('GET', 'http://non-existent.example.com');
 
         $this->assertInstanceOf(LoggerInterface::class, $client->getLogger());
+    }
+
+    /**
+     * @test
+     * @throws GuzzleException
+     */
+    public function itAllowsSettingHeadersOnDemand()
+    {
+        $stream = fopen('php://temp', 'r+');
+        $client = new HttpClient(['debug' => $stream]);
+
+        $client->withHeaders([
+            'X-GUS-1' => 'gustavo',
+            'X-GUS-2' => 'ocanto',
+        ])->head('google.com');
+
+        fseek($stream, 0);
+        $output = stream_get_contents($stream);
+
+        $this->assertStringContainsString('X-GUS-1: gustavo', $output);
+        $this->assertStringContainsString('X-GUS-2: ocanto', $output);
     }
 
     /**
