@@ -3,7 +3,7 @@
     "name": "gocanto/http-client",
     "homepage": "https://github.com/gocanto/http-client",
     "type": "php-bundle",
-    "description": "Http client that handles retries & logging.",
+    "description": "Http client that handles retries, logging & dynamic headers.",
     "minimum-stability": "dev",
     "prefer-stable": true,
     "keywords": [

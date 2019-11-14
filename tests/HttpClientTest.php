@@ -1,14 +1,26 @@
 <?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Gocanto http-client package.
+ *
+ * (c) Gustavo Ocanto <gustavoocanto@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Tests\Unit\Http;
 
 use Gocanto\HttpClient\HttpClient;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 
@@ -43,6 +55,27 @@ class HttpClientTest extends TestCase
     }
 
     /**
+     * @test
+     * @throws GuzzleException
+     */
+    public function itAllowsSettingHeadersOnDemand()
+    {
+        $stream = fopen('php://temp', 'r+');
+        $client = new HttpClient(['debug' => $stream]);
+
+        $client->withHeaders([
+            'X-GUS-1' => 'gustavo',
+            'X-GUS-2' => 'ocanto',
+        ])->head('google.com');
+
+        fseek($stream, 0);
+        $output = stream_get_contents($stream);
+
+        $this->assertStringContainsString('X-GUS-1: gustavo', $output);
+        $this->assertStringContainsString('X-GUS-2: ocanto', $output);
+    }
+
+    /**
      * @return HttpClient
      */
     private function getHttpClient(): HttpClient
@@ -67,8 +100,8 @@ class HttpClientTest extends TestCase
     {
         return function (
             $retries,
-            Request $request,
-            Response $response = null,
+            RequestInterface $request,
+            ResponseInterface $response = null,
             RequestException $exception = null
         ) use (
             $retryTotal
