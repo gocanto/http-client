@@ -215,11 +215,6 @@ class HttpClient extends Client
             ) {
                 foreach ($headers as $name => $value) {
                     $request = $request->withHeader($name, $value);
-
-//                    $this->getLogger()->info('The header added.', [
-//                        'name' => $name,
-//                        'value' => $value,
-//                    ]);
                 }
 
                 return $handler($request, $options);
