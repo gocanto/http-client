@@ -1,6 +1,9 @@
 <?php
+
+declare(strict_types=1);
+
 /*
- * This file is part of the Gocanto better-http-client
+ * This file is part of the Gocanto http-client package.
  *
  * (c) Gustavo Ocanto <gustavoocanto@gmail.com>
  *
