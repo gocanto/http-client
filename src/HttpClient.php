@@ -27,7 +27,7 @@ use Psr\Log\NullLogger;
 
 class HttpClient extends Client
 {
-    public const VERSION = '1.0.0';
+    public const VERSION = '1.1.0';
 
     /** @var LoggerInterface */
     private $logger;
