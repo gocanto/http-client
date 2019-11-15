@@ -91,6 +91,29 @@ try {
 
 Here, you will be given the incoming request and response that you are handling in that particular moment. [see more](https://github.com/gocanto/http-client/blob/master/src/HttpClient.php#L82)
 
+## On-Demand Headers
+
+Sometimes, we need to add headers to a given `client` instance based on dynamic data. 
+
+Such as requirement is not possible on the creation stage because we do not know what information we would be dealing with. Therefore, we need a mechanism to hook into and populate this data when needed. 
+
+This `client` supports this functionality through the `with Headers` to allow on-demand headers values whenever needed.
+
+For instance, you would be able to do something like so:
+
+```php
+$client = new HttpClient;
+
+$client->withHeaders([
+      'X-GUS-1' => 'testing testing',
+      'X-GUS-2' => 'testing testing',
+      'X-GUS-3' => 'testing testing',
+      'X-GUS-4' => 'testing testing',
+])->request('GET', 'https://foo.com');
+```
+
+to populate as many headers as needed. 
+
 
 ## Contributing
 
