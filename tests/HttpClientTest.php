@@ -2,21 +2,11 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Gocanto http-client package.
- *
- * (c) Gustavo Ocanto <gustavoocanto@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace Tests\Unit\Http;
+namespace Gocanto\HttpClient\Tests;
 
 use Gocanto\HttpClient\HttpClient;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
@@ -36,29 +26,25 @@ class HttpClientTest extends TestCase
 
         $client->retry(5, ['delay' => 0])
             ->request('GET', 'http://non-existent.example.com');
-
-        $this->assertInstanceOf(LoggerInterface::class, $client->getLogger());
     }
 
     /**
      * @test
      * @throws GuzzleException
      */
-    public function itAllowsDecidersCallback()
+    public function itAllowsDecidersCallback(): void
     {
         $client = $this->getHttpClient();
 
         $client->onRetry($this->decider(5), ['delay' => 0])
             ->request('GET', 'http://non-existent.example.com');
-
-        $this->assertInstanceOf(LoggerInterface::class, $client->getLogger());
     }
 
     /**
      * @test
      * @throws GuzzleException
      */
-    public function itAllowsSettingHeadersOnDemand()
+    public function itAllowsSettingHeadersOnDemand(): void
     {
         $stream = fopen('php://temp', 'r+');
         $client = new HttpClient(['debug' => $stream]);
@@ -71,13 +57,10 @@ class HttpClientTest extends TestCase
         fseek($stream, 0);
         $output = stream_get_contents($stream);
 
-        $this->assertStringContainsString('X-GUS-1: gustavo', $output);
-        $this->assertStringContainsString('X-GUS-2: ocanto', $output);
+        self::assertStringContainsString('X-GUS-1: gustavo', $output);
+        self::assertStringContainsString('X-GUS-2: ocanto', $output);
     }
 
-    /**
-     * @return HttpClient
-     */
     private function getHttpClient(): HttpClient
     {
         $logger = Mockery::mock(LoggerInterface::class);
@@ -92,17 +75,13 @@ class HttpClientTest extends TestCase
         return $client;
     }
 
-    /**
-     * @param int $retryTotal
-     * @return callable
-     */
     private function decider(int $retryTotal) : callable
     {
         return function (
             $retries,
             RequestInterface $request,
             ResponseInterface $response = null,
-            RequestException $exception = null
+            ConnectException $exception = null
         ) use (
             $retryTotal
         ) {
