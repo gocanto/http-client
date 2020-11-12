@@ -102,7 +102,7 @@ class HttpClientTest extends TestCase
             $retries,
             RequestInterface $request,
             ResponseInterface $response = null,
-            RequestException $exception = null
+            ConnectException $exception = null
         ) use (
             $retryTotal
         ) {

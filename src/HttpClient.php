@@ -91,7 +91,7 @@ class HttpClient extends Client
             $retries,
             RequestInterface $request,
             ResponseInterface $response = null,
-            RequestException $exception = null
+            ConnectException $exception = null
         ) use (
             $callback,
             $new
@@ -122,7 +122,7 @@ class HttpClient extends Client
             $retries,
             RequestInterface $request,
             ResponseInterface $response = null,
-            RequestException $exception = null
+            ConnectException $exception = null
         ) use (
             $retryTotal
         ) {
@@ -162,7 +162,7 @@ class HttpClient extends Client
         int $retries,
         int $retryTotal,
         ?ResponseInterface $response,
-        ?RequestException $exception
+        ?ConnectException $exception
     ): void {
         $this->getLogger()->warning(
             sprintf(
