@@ -27,6 +27,7 @@
         "psr/http-message": "^1.0"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-master",
         "phpunit/phpunit": "^9.4",
         "mockery/mockery": "^1.4",
         "friendsofphp/php-cs-fixer": "^2.16",
