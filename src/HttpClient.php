@@ -2,21 +2,11 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Gocanto http-client package.
- *
- * (c) Gustavo Ocanto <gustavoocanto@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Gocanto\HttpClient;
 
 use Closure;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\TransferStats;
@@ -29,16 +19,10 @@ class HttpClient extends Client
 {
     public const VERSION = '1.1.0';
 
-    /** @var LoggerInterface */
-    private $logger;
-    /** @var array Default request options */
-    private $config;
+    private LoggerInterface $logger;
+    private array $config;
 
-    /**
-     * @param array $config
-     * @param LoggerInterface|null $logger
-     */
-    public function __construct(array $config = [], LoggerInterface $logger = null)
+    public function __construct(array $config = [], ?LoggerInterface $logger = null)
     {
         $this->logger = $logger ?? new NullLogger();
         $config['on_stats'] = $config['on_stats'] ?? $this->addStatsListener();
@@ -46,24 +30,14 @@ class HttpClient extends Client
         parent::__construct($config);
     }
 
-    /**
-     * @return callable
-     */
     private function addStatsListener() : callable
     {
-        return function (TransferStats $stats) {
-            $this->logger->info('Request stats summary.', [
-                'method' => $stats->getRequest()->getMethod(),
-                'stats' => $stats->getHandlerStats(),
-            ]);
-        };
+        return fn (TransferStats $stats) => $this->logger->info('Request stats summary.', [
+            'method' => $stats->getRequest()->getMethod(),
+            'stats' => $stats->getHandlerStats(),
+        ]);
     }
 
-    /**
-     * @param int $times
-     * @param array $options
-     * @return HttpClient
-     */
     public function retry($times = 5, array $options = []): HttpClient
     {
         $handler = $options['handler'] ?? $this->getConfig('handler');
@@ -73,21 +47,16 @@ class HttpClient extends Client
         $config['handler'] = $handler;
 
         $new = clone $this;
-        $new->config = $config;
+        $new->config = empty($config) ? [] : $config;
 
         return $new;
     }
 
-    /**
-     * @param callable $callback
-     * @param array $options
-     * @return HttpClient
-     */
     public function onRetry(callable $callback, array $options = []): HttpClient
     {
         $new = clone $this;
 
-        $decider = function (
+        $decider = static function (
             $retries,
             RequestInterface $request,
             ResponseInterface $response = null,
@@ -107,16 +76,12 @@ class HttpClient extends Client
         $config = $this->getConfig();
         $config['handler'] = $handler;
 
-        $new->config = $config;
+        $new->config = empty($config) ? [] : $config;
 
         return $new;
     }
 
-    /**
-     * @param $retryTotal
-     * @return callable
-     */
-    private function decider($retryTotal): callable
+    private function decider(int $retryTotal): callable
     {
         return function (
             $retries,
@@ -150,13 +115,6 @@ class HttpClient extends Client
         };
     }
 
-    /**
-     * @param RequestInterface $request
-     * @param int $retries
-     * @param int $retryTotal
-     * @param ResponseInterface|null $response
-     * @param RequestException|null $exception
-     */
     private function warning(
         RequestInterface $request,
         int $retries,
@@ -182,17 +140,11 @@ class HttpClient extends Client
         );
     }
 
-    /**
-     * By default uses an exponentially increasing delay between retries.
-     *
-     * @param array $options
-     * @return callable
-     */
     private function delay(array $options): callable
     {
         $customDelay = $options['delay'] ?? null;
 
-        return function ($numberOfRetries) use ($customDelay) {
+        return static function ($numberOfRetries) use ($customDelay) {
             if ($customDelay !== null) {
                 return (int)$customDelay;
             }
@@ -201,14 +153,10 @@ class HttpClient extends Client
         };
     }
 
-    /**
-     * @param array $headers
-     * @return HttpClient
-     */
-    public function withHeaders(array $headers): HttpClient
+    public function withHeaders(array $headers): self
     {
-        $middleware = function (callable $handler) use ($headers) {
-            return function (
+        $middleware = static function (callable $handler) use ($headers) {
+            return static function (
                 RequestInterface $request,
                 array $options
             ) use (
@@ -231,22 +179,16 @@ class HttpClient extends Client
         $config['handler'] = $handler;
 
         $new = clone $this;
-        $new->config = $config;
+        $new->config = empty($config) ? [] : $config;
 
         return $new;
     }
 
-    /**
-     * @param LoggerInterface $logger
-     */
     public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
     }
 
-    /**
-     * @return LoggerInterface
-     */
     public function getLogger(): LoggerInterface
     {
         return $this->logger;
