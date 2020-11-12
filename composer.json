@@ -22,7 +22,7 @@
         "issues": "https://github.com/gocanto/http-client/issues"
     },
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
         "guzzlehttp/guzzle": "^7.2",
         "psr/http-message": "^1.0"
     },
