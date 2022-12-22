@@ -1,4 +1,4 @@
-name: Build & Test
+name: Http Client
 
 on:
     push:
@@ -13,7 +13,7 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                php: [8.0]
+                php: [ 8.0, 8.1, 8.2 ]
                 dependency-version: [ prefer-stable ]
                 os: [ ubuntu-latest ]
 
