@@ -23,11 +23,6 @@ jobs:
                 fetch-depth: 0
                 if: success()
 
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: '8.1.6'
-
             - name: Install Dependencies
               if: success()
               run: |
