@@ -8,3 +8,4 @@ infection.log
 .php_cs.cache
 public
 .idea/
+.php-cs-fixer.cache

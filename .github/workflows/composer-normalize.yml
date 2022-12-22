@@ -1,0 +1,27 @@
+name: Composer Normalizer
+
+on:
+    push:
+        paths:
+            - 'composer.json'
+
+jobs:
+    normalize:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Git Checkout
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+                  if: success()
+
+            - name: Install Dependencies
+              run: |
+                  composer config allow-plugins.ergebnis/composer-normalize true
+                  composer require --dev ergebnis/composer-normalize
+                  composer update --lock --no-scripts
+
+            - uses: stefanzweifel/git-auto-commit-action@v4.0.0
+              with:
+                commit_message: normalize composer.json
+

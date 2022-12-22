@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
-<ruleset name="Converter PHPMD ruleset">
-    <description> Converter PHP coding ruleset </description>
+<ruleset name="Custom Standard" namespace="Gocanto\HttpClient">
+    <description>PHP coding ruleset</description>
+    <file>./src</file>
+    <arg name="colors"/>
+    <arg value="sp"/>
+    <ini name="memory_limit" value="512M"/>
+    <autoload>/vendor/autoload.php</autoload>
     <rule ref="PSR2" />
 </ruleset>
