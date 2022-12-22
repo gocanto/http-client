@@ -30,7 +30,7 @@ class HttpClient extends Client
         parent::__construct($config);
     }
 
-    private function addStatsListener() : callable
+    private function addStatsListener(): callable
     {
         return fn (TransferStats $stats) => $this->logger->info('Request stats summary.', [
             'method' => $stats->getRequest()->getMethod(),
