@@ -9,13 +9,13 @@ jobs:
     normalize:
         runs-on: ubuntu-latest
         steps:
-            - name: Git checkout
+            - name: Git Checkout
               uses: actions/checkout@v3
               with:
                   fetch-depth: 0
                   if: success()
 
-            - name: install dependencies
+            - name: Install Dependencies
               run: |
                   composer config allow-plugins.ergebnis/composer-normalize true
                   composer require --dev ergebnis/composer-normalize

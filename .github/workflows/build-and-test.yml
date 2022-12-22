@@ -23,19 +23,19 @@ jobs:
                 fetch-depth: 0
                 if: success()
 
-            - name: setup PHP
+            - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
                   php-version: '8.1.6'
 
-            - name: install dependencies
+            - name: Install Dependencies
               if: success()
               run: |
                   php -v
                   composer install --no-interaction
-                  zip -qr http-client-build.zip ./ -x '*.git*'
+                  zip -qr http-client-build.zip ./
 
-            - name: build artifact
+            - name: Build Artifact
               uses: actions/upload-artifact@v2
               with:
                   name: http-client-build.zip
@@ -43,7 +43,7 @@ jobs:
 
     test:
         timeout-minutes: 10
-        needs: [build]
+        needs: [styles]
         name: Test with PHP ${{ matrix.php }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
         runs-on: ${{ matrix.os }}
         strategy:
@@ -53,18 +53,18 @@ jobs:
                 os: [ ubuntu-latest ]
 
         steps:
-            - name: download artifact
+            - name: Download Artifact
               uses: actions/download-artifact@v2
               with:
                   name: http-client-build.zip
                   path: ./
 
-            - name: "prepare package"
+            - name: Prepare Package
               if: success()
               run: |
                   unzip -q http-client-build.zip
 
-            - name: "run PHPUnit"
+            - name: Run Tests
               if: success() && github.event.pull_request.draft == false
               run: |
                   composer test
@@ -73,21 +73,21 @@ jobs:
         timeout-minutes: 10
         needs: [ build ]
         runs-on: ubuntu-latest
-        name: fix code styles
+        name: Fix Code Styles
 
         steps:
-            - name: download artifact
+            - name: Download Artifact
               uses: actions/download-artifact@v2
               with:
                   name: http-client-build.zip
                   path: ./
 
-            - name: "prepare package"
+            - name: Prepare Package
               if: success()
               run: |
                   unzip -q http-client-build.zip
 
-            - name: run & apply fixes
+            - name: Run & Apply Code Style Fixes
               run: |
                   PHP_CS_FIXER_IGNORE_ENV=1 composer fix-style
 
