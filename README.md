@@ -125,11 +125,15 @@ The MIT License (MIT). Please see [License File](https://github.com/gocanto/http
 
 
 ## How can I thank you?
-Why not star the github repo and share the link for this repository on Twitter?
 
+There are many ways you would be able to support my open source work. There is not a right one to choose, so the choice is yours.
 
-Don't forget to [follow me on twitter](https://twitter.com/gocanto)!
+Nevertheless :grinning:, I would propose the following
 
-Thanks!
+- :arrow_up: Follow me on [Twitter](https://twitter.com/gocanto).
+- :star: Star the repository.
+- :handshake: Open a pull request to fix/improve the codebase.
+- :writing_hand: Open a pull request to improve the documentation.
+- :coffee: Buy me a [coffee](https://github.com/sponsors/gocanto)?
 
-Gustavo Ocanto.
+> Thank you for reading this far. :blush:
