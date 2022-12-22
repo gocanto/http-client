@@ -1,0 +1,50 @@
+name: Build & Test
+
+on:
+    pull_request:
+        branches:
+            - 'master'
+            - 'feature/*'
+            - 'hotfix/*'
+        types: [opened, synchronize, reopened, ready_for_review]
+    push:
+        branches:
+            - 'master'
+
+jobs:
+    test:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                php: [8.0, 8.1]
+                dependency-version: [prefer-stable]
+                os: [ubuntu-latest]
+        name: P${{ matrix.php }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Cache dependencies
+              uses: actions/cache@v1
+              with:
+                  path: ~/.composer/cache/files
+                  key: php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  coverage: none
+                  extensions: mbstring, dom, json, libxml, xml, xmlwriter
+                  tools: php-cs-fixer, phpunit
+
+            - name: Install dependencies
+              run: |
+                  composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+
+            - name: Run Tests
+              run: composer test
+
+            - name: Run Psalm
+              run: composer analysis
