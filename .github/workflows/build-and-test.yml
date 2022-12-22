@@ -72,12 +72,8 @@ jobs:
     styles:
         timeout-minutes: 10
         needs: [ build ]
-        runs-on: ${{ matrix.os }}
-        strategy:
-            matrix:
-                php: [8.0]
-                dependency-version: [ prefer-stable ]
-                os: [ ubuntu-latest ]
+        runs-on: ubuntu-latest
+        name: fix code styles
 
         steps:
             - name: download artifact
@@ -98,4 +94,3 @@ jobs:
             - uses: stefanzweifel/git-auto-commit-action@v4.0.0
               with:
                   commit_message: apply coding style fixes
-
