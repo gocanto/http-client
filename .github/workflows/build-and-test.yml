@@ -9,11 +9,11 @@ on:
 
 jobs:
     build:
-        name: P${{ matrix.php }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
+        name: Build with PHP ${{ matrix.php }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                php: [8.0, 8.1, 8.2]
+                php: [8.0]
                 dependency-version: [ prefer-stable ]
                 os: [ ubuntu-latest ]
 
@@ -44,8 +44,7 @@ jobs:
     test:
         timeout-minutes: 10
         needs: [build]
-
-        name: Test with P${{ matrix.php }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
+        name: Test with PHP ${{ matrix.php }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
