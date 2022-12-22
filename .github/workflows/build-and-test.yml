@@ -13,7 +13,7 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                php: [8.0, 8.1]
+                php: [8.0, 8.1, 8.2]
                 dependency-version: [ prefer-stable ]
                 os: [ ubuntu-latest ]
 
@@ -42,10 +42,17 @@ jobs:
                   path: http-client-build.zip
 
     test:
-        name: "Tests"
-        runs-on: ubuntu-22.04
         timeout-minutes: 10
         needs: [build]
+
+        name: Test with P${{ matrix.php }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                php: [ 8.0, 8.1, 8.2 ]
+                dependency-version: [ prefer-stable ]
+                os: [ ubuntu-latest ]
+
         steps:
             - name: download artifact
               uses: actions/download-artifact@v2
