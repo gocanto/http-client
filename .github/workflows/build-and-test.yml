@@ -13,25 +13,49 @@ on:
 
 jobs:
     build:
-        - uses: actions/checkout@v3
-          with:
-            fetch-depth: 0
-            if: success()
+        name: "Build"
+        steps:
+            - uses: actions/checkout@v3
+              with:
+                fetch-depth: 0
+                if: success()
 
-        - name: Setup PHP
-          uses: shivammathur/setup-php@v2
-          with:
-              php-version: '8.1.6'
+            - name: setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.1.6'
 
-        - name: install dependencies
-          if: success()
-          run: |
-              php -v
-              composer config -g github-oauth.github.com "$GH_PAT"
-              composer install --no-interaction
+            - name: install dependencies
+              if: success()
+              run: |
+                  php -v
+                  composer config -g github-oauth.github.com "$GH_PAT"
+                  composer install --no-interaction
 
-        - name: build artifact
-          uses: actions/upload-artifact@v2
-          with:
-              name: http-client-build.zip
-              path: http-client-build.zip
+            - name: build artifact
+              uses: actions/upload-artifact@v2
+              with:
+                  name: http-client-build.zip
+                  path: http-client-build.zip
+
+    test:
+        name: "Quick Tests"
+        runs-on: ubuntu-22.04
+        timeout-minutes: 10
+        needs: [build]
+        steps:
+            - name: download artifact
+              uses: actions/download-artifact@v2
+              with:
+                  name: http-client-build.zip
+                  path: ./
+
+            - name: "prepare package"
+              if: success()
+              run: |
+                  unzip -q http-client-build.zip
+
+            - name: "run PHPUnit"
+              if: success() && github.event.pull_request.draft == false
+              run: |
+                  composer tests
