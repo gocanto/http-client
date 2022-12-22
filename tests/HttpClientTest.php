@@ -75,7 +75,7 @@ class HttpClientTest extends TestCase
         return $client;
     }
 
-    private function decider(int $retryTotal) : callable
+    private function decider(int $retryTotal): callable
     {
         return function (
             $retries,

@@ -1,4 +1,4 @@
-name: Http Client
+name: Tests
 
 on:
     push:

@@ -57,6 +57,9 @@
         ],
         "analysis": [
             "./vendor/bin/phpcs --report=code --standard=PSR2 --warning-severity=0 -q src/"
+        ],
+        "fix-style": [
+            "vendor/bin/php-cs-fixer fix ./src ./tests --config=.php-cs-fixer.php"
         ]
     }
 }
